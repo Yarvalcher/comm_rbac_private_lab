@@ -1,11 +1,11 @@
 name: hello
 on:
-  pull request:
+  pull_request:
   push:
-    branches: [main]
+    branches: [prod]
 jobs:
   hello:
     runs-on: ubuntu-latest
     steps:
-      - users: actions/checkout@v4
+      - uses: actions/checkout@v4
       - run: echo "hello from CI"
