@@ -31,6 +31,11 @@ SNOW=$(pick snow scripts)
 PY=python
 command -v python >/dev/null 2>&1 || PY=python3
 command -v "$PY" >/dev/null 2>&1 || PY=py
+# Prefer the Windows launcher's 3.12 when PATH puts another Python first.
+if ! "$PY" --version 2>&1 | grep -q "^Python 3\.12\." && command -v py >/dev/null 2>&1; then
+  PY312=$(py -3.12 -c "import sys; print(sys.executable)" 2>/dev/null | tr -d '\r')
+  [ -n "$PY312" ] && PY="$PY312"
+fi
 
 check git       git --version
 check openssl   openssl version
