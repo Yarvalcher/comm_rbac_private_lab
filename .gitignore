@@ -226,3 +226,4 @@ __marimo__/
 target/
 logs/
 *.csv
+.docs/learning_plan/
