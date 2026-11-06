@@ -227,3 +227,7 @@ target/
 logs/
 *.csv
 docs/learning_plan/
+*.tfvars
+.terraform/
+*.tfstate
+*.tfstate.*
