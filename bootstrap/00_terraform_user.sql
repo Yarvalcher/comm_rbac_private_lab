@@ -1,0 +1,25 @@
+-- Lesson 1.4: the one manual bootstrap. Run once in Snowsight as ACCOUNTADMIN.
+-- Everything after this is created by Terraform.
+-- Only the PUBLIC key goes here. The private key (.p8) stays outside the repo.
+
+USE ROLE ACCOUNTADMIN;
+
+CREATE ROLE IF NOT EXISTS TF_ADMIN;
+
+CREATE USER IF NOT EXISTS SVC_TERRAFORM TYPE = SERVICE;
+
+ALTER USER SVC_TERRAFORM SET
+  RSA_PUBLIC_KEY = --put here
+  DEFAULT_ROLE = TF_ADMIN;
+
+GRANT ROLE TF_ADMIN TO USER SVC_TERRAFORM;
+GRANT ROLE TF_ADMIN TO ROLE SYSADMIN;
+
+-- Least privilege for Terraform. Add MANAGE GRANTS only if an apply fails without it, and log why.
+GRANT CREATE ROLE      ON ACCOUNT TO ROLE TF_ADMIN;
+GRANT CREATE DATABASE  ON ACCOUNT TO ROLE TF_ADMIN;
+GRANT CREATE WAREHOUSE ON ACCOUNT TO ROLE TF_ADMIN;
+GRANT CREATE USER      ON ACCOUNT TO ROLE TF_ADMIN;
+
+-- Check: RSA_PUBLIC_KEY_FP should be set.
+DESC USER SVC_TERRAFORM;
